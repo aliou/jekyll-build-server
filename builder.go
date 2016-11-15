@@ -92,12 +92,15 @@ func clone(e *Execer, payload *github.WebHookPayload) (src string, err error) {
 func build(e *Execer, src, dest string) (err error) {
 	e.Log("system: Building from %s to %s", src, dest)
 
-	err = e.ExecInDir(src, "script/bootstrap", "--without development test")
+	// err = e.ExecInDir(src, "script/bootstrap", "--without development test")
+	err = e.ExecInDir(src, "bundle", "install")
 	if err != nil {
 		return
 	}
 
-	err = e.ExecInDir(src, "script/build", "-s", src, "-d", dest)
+	// err = e.ExecInDir(src, "script/build", "-s", src, "-d", dest)
+	err = e.ExecInDir(src, "bundle", "exec", "jekyll", "build",
+		"--incremental", "-s", src, "-d", dest)
 	if err != nil {
 		return
 	}
@@ -107,8 +110,10 @@ func build(e *Execer, src, dest string) (err error) {
 
 func source(repo *github.Repository) string {
 	return sourceBase
+	// return fmt.Sprintf("%s/%s", sourceBase, *repo.FullName)
 }
 
 func destination(repo *github.Repository) string {
 	return destBase
+	// return fmt.Sprintf("%s/%s", destBase, *repo.FullName)
 }
