@@ -106,9 +106,9 @@ func build(e *Execer, src, dest string) (err error) {
 }
 
 func source(repo *github.Repository) string {
-	return fmt.Sprintf("%s/%s", sourceBase, *repo.FullName)
+	return sourceBase
 }
 
 func destination(repo *github.Repository) string {
-	return fmt.Sprintf("%s/%s", destBase, *repo.FullName)
+	return destBase
 }
